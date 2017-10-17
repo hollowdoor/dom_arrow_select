@@ -1,0 +1,36 @@
+li {
+    border: 1px solid black;
+}
+#vertical li {
+    /*margin: 10px;*/
+}
+#horizontal {
+    padding: 0px;
+    margin: 0px;
+}
+#horizontal li {
+    list-style: none;
+    display: inline;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
+
+#flowing {
+    width: 110px;
+    border: 2px solid red;
+    padding: 0;
+}
+#flowing li {
+    list-style: none;
+    display: inline;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    float: left;
+    width: 50px;
+}
+
+.selected {
+    color: red;
+}

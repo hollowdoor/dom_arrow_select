@@ -1,0 +1,47 @@
+{
+  "name": "dom-arrow-select",
+  "description": "Select elements with arrow keys",
+  "keywords": [
+    "DOM",
+    "keys"
+  ],
+  "version": "1.0.0",
+  "scripts": {
+    "build": "ebam",
+    "test": "echo \"no test\""
+  },
+  "license": "MIT",
+  "ebam": {
+    "entry": "src/index.js",
+    "transforms": {
+      "dangerousForOf": false,
+      "dangerousTaggedTemplateString": false
+    },
+    "test": {
+      "dest": "test/code.js",
+      "src": "test/src.js"
+    }
+  },
+  "author": "Quentin Engles <hollowdoor99@gmail.com> (https://hollowdoor.github.io)",
+  "dependencies": {
+    "dom-eve": "^1.0.0",
+    "dom-next-element-sibling": "^1.0.0",
+    "dom-step": "^2.0.0",
+    "object-assign": "^4.1.1"
+  },
+  "main": "dist/bundle.js",
+  "jsnext:main": "dist/bundle.es.js",
+  "module": "dist/bundle.es.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hollowdoor/dom_arrow_select.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hollowdoor/dom_arrow_select/issues"
+  },
+  "homepage": "https://github.com/hollowdoor/dom_arrow_select#readme"
+}
