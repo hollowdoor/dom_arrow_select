@@ -12,6 +12,40 @@ function getKey(keyCode){
     return keySet[keyCode] || null;
 }
 
+function stepOption(opts, options, step, self){
+    opts[step] = {};
+    let range = options.range;
+    let wrap = options.wrap;
+    Object.defineProperties(opts[step], {
+        range: {
+            set(v){
+                range = v;
+            },
+            get(){
+                return range || self.range;
+            }
+        },
+        wrap: {
+            set(v){
+                wrap = v;
+            },
+            get(){
+                return wrap || self.wrap;
+            }
+        }
+    });
+    return opts;
+}
+
+function createStepOptions(options, self){
+    let opts = {};
+    stepOption(opts, options, 'down', self);
+    stepOption(opts, options, 'up', self);
+    stepOption(opts, options, 'left', self);
+    stepOption(opts, options, 'right', self);
+    return options;
+}
+
 class DOMArrowSelect {
     constructor(element, {
         step = {},
@@ -20,17 +54,12 @@ class DOMArrowSelect {
         wrap = 5
     } = {}){
 
-        ['down', 'up', 'left', 'right'].forEach(key=>{
-            step[key] = step[key] || {};
-            step[key].range = step[key].range || range;
-            step[key].wrap = step[key].wrap || wrap;
-        });
+        this.range = range;
+        this.wrap = wrap;
 
-        this.step = step;
+        this.step = createStepOptions(step, this);
 
         const tracker = this.tracker = events.track();
-
-        console.log('step ',step)
 
         events(document, tracker).on('keyup', event=>{
 
@@ -55,12 +84,8 @@ class DOMArrowSelect {
                             );
                         }
                     }else{
-                        console.log('stepping')
                         next = domStep(el, key, this.step[key]);
                     }
-
-                    console.log('el ',el)
-                    console.log('next ',next);
 
                     if(next){
                         if(el){

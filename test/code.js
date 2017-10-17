@@ -703,6 +703,40 @@ function getKey(keyCode){
     return keySet[keyCode] || null;
 }
 
+function stepOption(opts, options, step$$1, self){
+    opts[step$$1] = {};
+    var range = options.range;
+    var wrap = options.wrap;
+    Object.defineProperties(opts[step$$1], {
+        range: {
+            set: function set(v){
+                range = v;
+            },
+            get: function get(){
+                return range || self.range;
+            }
+        },
+        wrap: {
+            set: function set(v){
+                wrap = v;
+            },
+            get: function get(){
+                return wrap || self.wrap;
+            }
+        }
+    });
+    return opts;
+}
+
+function createStepOptions(options, self){
+    var opts = {};
+    stepOption(opts, options, 'down', self);
+    stepOption(opts, options, 'up', self);
+    stepOption(opts, options, 'left', self);
+    stepOption(opts, options, 'right', self);
+    return options;
+}
+
 var DOMArrowSelect = function DOMArrowSelect(element, ref){
     var this$1 = this;
     if ( ref === void 0 ) { ref = {}; }
@@ -712,17 +746,12 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
     var wrap = ref.wrap; if ( wrap === void 0 ) { wrap = 5; }
 
 
-    ['down', 'up', 'left', 'right'].forEach(function (key){
-        step$$1[key] = step$$1[key] || {};
-        step$$1[key].range = step$$1[key].range || range;
-        step$$1[key].wrap = step$$1[key].wrap || wrap;
-    });
+    this.range = range;
+    this.wrap = wrap;
 
-    this.step = step$$1;
+    this.step = createStepOptions(step$$1, this);
 
     var tracker = this.tracker = events.track();
-
-    console.log('step ',step$$1);
 
     events(document, tracker).on('keyup', function (event){
 
@@ -747,12 +776,8 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
                         );
                     }
                 }else{
-                    console.log('stepping');
                     next = step(el, key, this$1.step[key]);
                 }
-
-                console.log('el ',el);
-                console.log('next ',next);
 
                 if(next){
                     if(el){
