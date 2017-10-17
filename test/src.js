@@ -1,8 +1,8 @@
 import arrowSelect from '../';
 
-arrowSelect(document.querySelector('#vertical'), {
-    selected: 'selected',
-    step: {
+const as = arrowSelect(document.querySelector('#vertical'), {
+    selectID: 'selected',
+    /*step: {
         down: {
             wrap: 5,
             range: 3
@@ -11,5 +11,13 @@ arrowSelect(document.querySelector('#vertical'), {
             wrap: 5,
             range: 3
         }
-    }
+    }*/
 });
+
+setTimeout(()=>{
+
+    as.selectAll();
+    setTimeout(()=>{
+        as.unSelectAll();
+    }, 1000);
+}, 1000);
