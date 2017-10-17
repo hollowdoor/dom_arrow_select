@@ -1,39 +1,9 @@
 import events from 'dom-eve';
 import domStep from 'dom-step';
 import arrayFrom from 'array-from';
+import getCorner from 'dom-get-corner';
 import createStepOptions from './lib/step_options.js';
 import getKey from './lib/get_key.js';
-
-function getCorner(element, dir, {
-    xrange = 10, yrange = 10, depth = 5
-} = {}){
-
-    let el, parent, i=0;
-
-    if(['down', 'right', -1].indexOf(dir) !== -1){
-        let rect = element.getBoundingClientRect();
-        el = document.elementFromPoint(
-            rect.left + xrange,
-            rect.top + yrange
-        );
-    }else if(['up', 'left', 1].indexOf(dir) !== -1){
-        let rect = element.getBoundingClientRect();
-        el = document.elementFromPoint(
-            rect.right - xrange,
-            rect.bottom - yrange
-        );
-    }
-
-    parent = el;
-
-    for(let i=0; i<depth; i++){
-        el = parent;
-        parent = parent.parentNode;
-        if(parent === element){
-            return el;
-        }
-    }
-}
 
 class DOMArrowSelect {
     constructor(element, {
@@ -64,7 +34,7 @@ class DOMArrowSelect {
                 let el = this.current;
                 let next = null;
                 if(!el){
-                    next = getCorner(element, key);
+                    next = getCorner(element, key, {reverse:true});
                 }else{
                     next = domStep(el, key, this.step[key]);
                 }
