@@ -40,8 +40,8 @@ const as = arrowSelect({
         //next is the element in the
         //direction of the arrow key input
         this.select(next);
-        //edge is first if next is the first element
-        //edge is last if next is the last element
+        //edge is 'first' if next is the first element
+        //edge is 'last' if next is the last element
         //edge is null otherwise
     }
 }).focus(document.querySelector('#parent-id'));
