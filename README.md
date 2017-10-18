@@ -12,9 +12,9 @@ Usage
 ```javascript
 import arrowSelect from 'dom-arrow-select';
 
-arrowSelect(document.querySelector('#parent-id'), {
+arrowSelect({
     selectID: 'selected'
-});
+}).focus(document.querySelector('#parent-id'));
 ```
 
 With Defaults
@@ -23,7 +23,7 @@ With Defaults
 ```javascript
 import arrowSelect from 'dom-arrow-select';
 
-const as = arrowSelect(document.querySelector('#parent-id'), {
+const as = arrowSelect({
     //Step options for dom-step
     step: {},
     //Selection class to keep track of selected elements
@@ -44,7 +44,7 @@ const as = arrowSelect(document.querySelector('#parent-id'), {
         //edge is last if next is the last element
         //edge is null otherwise
     }
-});
+}).focus(document.querySelector('#parent-id'));
 ```
 
 ### options.step
@@ -54,7 +54,7 @@ const as = arrowSelect(document.querySelector('#parent-id'), {
 ```javascript
 import arrowSelect from 'dom-arrow-select';
 
-const as = arrowSelect(document.querySelector('#parent-id'), {
+const as = arrowSelect({
     step: {
         down: {
             wrap: 5,
@@ -73,19 +73,27 @@ const as = arrowSelect(document.querySelector('#parent-id'), {
             range: 3
         },
     }
-});
+}).focus('#parent-id');
 ```
 
 API
 ---
 
+See [dom-get-element](https://github.com/hollowdoor/dom_get_element) to see what you can pass to `as.focus()`, `as.select()`, and `as.unSelect()`.
+
+### as.focus(element)
+
+Set `element` as the current parent. It's children will be selectable. `element` must be a valid value for [dom-get-element](https://github.com/hollowdoor/dom_get_element).
+
+All methods return `this` for chaining.
+
 ### as.select(element)
 
-Select the given element.
+Select the given child element. Passing null makes `as.select()` do nothing.
 
 ### as.unSelect(element)
 
-De-select the given element.
+De-select the given child element. Passing null makes `as.unSelect()` do nothing.
 
 ### as.selectAll()
 

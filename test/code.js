@@ -964,6 +964,40 @@ function getCorner(element, dir, ref){
     }
 }
 
+function isElement$1(o){
+    var type = typeof Element; //HTMLElement maybe
+    return (
+    type === "object" || type === 'function'
+    ? o instanceof Element
+    //DOM2
+    : !!o
+        && typeof o === "object"
+        && o.nodeType === 1 //Definitely an Element
+        && typeof o.nodeName==="string"
+    );
+}
+
+function getElement(element){
+    if(typeof element === 'string'){
+        try{
+            return document.querySelector(element);
+        }catch(e){ throw e; }
+    }
+
+    if(isElement$1(element)) { return element; }
+
+    if(!!element && typeof element === 'object'){
+        if(isElement$1(element.element)){
+            return element.element;
+        }else if(isElement$1(element[0])){
+            return element[0];
+        }
+    }
+
+    throw new TypeError(("value (" + element + ") in isElement(value)\n    is not an element, valid css selector,\n    or object with an element property, or index 0."));
+
+}
+
 function stepOption(opts, options, step$$1, self){
     opts[step$$1] = {};
     var range = options.range;
@@ -1018,7 +1052,7 @@ function isEdge(el, child){
     return null;
 }
 
-var DOMArrowSelect = function DOMArrowSelect(element, ref){
+var DOMArrowSelect = function DOMArrowSelect(ref){
     var this$1 = this;
     if ( ref === void 0 ) { ref = {}; }
     var step$$1 = ref.step; if ( step$$1 === void 0 ) { step$$1 = {}; }
@@ -1033,7 +1067,7 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
 
     this.range = range;
     this.wrap = wrap;
-    this.element = element;
+    this.element = null;
     this.current = null;
     this.selectID = selectID;
 
@@ -1042,7 +1076,7 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
     var tracker = this.tracker = events.track();
 
     events(document, tracker).on('keyup', function (event){
-
+        var element = this$1.element;
         var key = getKey(event.which || event.keyCode);
 
         if(key){
@@ -1071,7 +1105,13 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
         tracker.clear();
     };
 };
+DOMArrowSelect.prototype.focus = function focus (element){
+    this.element = getElement(element);
+    return this;
+};
 DOMArrowSelect.prototype.unSelect = function unSelect (child){
+    if(child === null) { return this; }
+    child = getElement(child);
 
     if(child){
         if(child.parentNode !== this.element){
@@ -1082,8 +1122,12 @@ DOMArrowSelect.prototype.unSelect = function unSelect (child){
             this.current = null;
         }
     }
+    return this;
 };
 DOMArrowSelect.prototype.select = function select (child){
+    if(child === null) { return this; }
+    child = getElement(child);
+
     if(child.parentNode !== this.element){
         throw new TypeError(((child.outerHTML) + " is not a child of " + (this.element.outerHTML)));
     }
@@ -1092,6 +1136,7 @@ DOMArrowSelect.prototype.select = function select (child){
         child.classList.add(this.selectID);
         this.current = child;
     }
+    return this;
 };
 DOMArrowSelect.prototype.unSelectAll = function unSelectAll (){
         var this$1 = this;
@@ -1102,6 +1147,7 @@ DOMArrowSelect.prototype.unSelectAll = function unSelectAll (){
         child.classList.remove(this$1.selectID);
     });
     this.current = null;
+    return this;
 };
 DOMArrowSelect.prototype.selectAll = function selectAll (){
         var this$1 = this;
@@ -1111,13 +1157,14 @@ DOMArrowSelect.prototype.selectAll = function selectAll (){
         list[i].classList.add(this$1.selectID);
     }
     this.current = list[list.length - 1];
+    return this;
 };
 
 function arrowSelect(element, options){
     return new DOMArrowSelect(element, options);
 }
 
-var as = arrowSelect(document.querySelector('#vertical'), {
+var as = arrowSelect({
     selectID: 'selected',
     selected: function selected(next, prev, edge){
         console.log('edge ', edge);
@@ -1135,6 +1182,8 @@ var as = arrowSelect(document.querySelector('#vertical'), {
         }
     }
 });
+
+as.focus('#vertical');
 
 setTimeout(function (){
 

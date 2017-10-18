@@ -2,6 +2,7 @@ import events from 'dom-eve';
 import domStep from 'dom-step';
 import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
+import getElement from 'dom-get-element';
 import createStepOptions from './lib/step_options.js';
 import getKey from './lib/get_key.js';
 
@@ -15,7 +16,7 @@ function isEdge(el, child){
 }
 
 class DOMArrowSelect {
-    constructor(element, {
+    constructor({
         step = {},
         selectID = 'dom-arrow-select-selected',
         selected = function(next, prev){
@@ -28,7 +29,7 @@ class DOMArrowSelect {
 
         this.range = range;
         this.wrap = wrap;
-        this.element = element;
+        this.element = null;
         this.current = null;
         this.selectID = selectID;
 
@@ -37,7 +38,7 @@ class DOMArrowSelect {
         const tracker = this.tracker = events.track();
 
         events(document, tracker).on('keyup', event=>{
-
+            let element = this.element;
             let key = getKey(event.which || event.keyCode);
 
             if(key){
@@ -66,7 +67,13 @@ class DOMArrowSelect {
             tracker.clear();
         };
     }
+    focus(element){
+        this.element = getElement(element);
+        return this;
+    }
     unSelect(child){
+        if(child === null) return this;
+        child = getElement(child);
 
         if(child){
             if(child.parentNode !== this.element){
@@ -77,8 +84,12 @@ class DOMArrowSelect {
                 this.current = null;
             }
         }
+        return this;
     }
     select(child){
+        if(child === null) return this;
+        child = getElement(child);
+
         if(child.parentNode !== this.element){
             throw new TypeError(`${child.outerHTML} is not a child of ${this.element.outerHTML}`);
         }
@@ -87,6 +98,7 @@ class DOMArrowSelect {
             child.classList.add(this.selectID);
             this.current = child;
         }
+        return this;
     }
     unSelectAll(){
 
@@ -95,6 +107,7 @@ class DOMArrowSelect {
             child.classList.remove(this.selectID);
         });
         this.current = null;
+        return this;
     }
     selectAll(){
         let list = this.element.children;
@@ -102,6 +115,7 @@ class DOMArrowSelect {
             list[i].classList.add(this.selectID);
         }
         this.current = list[list.length - 1];
+        return this;
     }
 }
 

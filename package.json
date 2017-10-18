@@ -27,6 +27,7 @@
     "array-from": "^2.1.1",
     "dom-eve": "^1.0.0",
     "dom-get-corner": "^1.0.0",
+    "dom-get-element": "^1.0.0",
     "dom-next-element-sibling": "^1.0.0",
     "dom-step": "^2.0.0",
     "object-assign": "^4.1.1"

@@ -2,6 +2,7 @@ import events from 'dom-eve';
 import domStep from 'dom-step';
 import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
+import getElement from 'dom-get-element';
 
 function stepOption(opts, options, step, self){
     opts[step] = {};
@@ -57,7 +58,7 @@ function isEdge(el, child){
     return null;
 }
 
-var DOMArrowSelect = function DOMArrowSelect(element, ref){
+var DOMArrowSelect = function DOMArrowSelect(ref){
     var this$1 = this;
     if ( ref === void 0 ) ref = {};
     var step = ref.step; if ( step === void 0 ) step = {};
@@ -72,7 +73,7 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
 
     this.range = range;
     this.wrap = wrap;
-    this.element = element;
+    this.element = null;
     this.current = null;
     this.selectID = selectID;
 
@@ -81,7 +82,7 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
     var tracker = this.tracker = events.track();
 
     events(document, tracker).on('keyup', function (event){
-
+        var element = this$1.element;
         var key = getKey(event.which || event.keyCode);
 
         if(key){
@@ -110,7 +111,13 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
         tracker.clear();
     };
 };
+DOMArrowSelect.prototype.focus = function focus (element){
+    this.element = getElement(element);
+    return this;
+};
 DOMArrowSelect.prototype.unSelect = function unSelect (child){
+    if(child === null) { return this; }
+    child = getElement(child);
 
     if(child){
         if(child.parentNode !== this.element){
@@ -121,8 +128,12 @@ DOMArrowSelect.prototype.unSelect = function unSelect (child){
             this.current = null;
         }
     }
+    return this;
 };
 DOMArrowSelect.prototype.select = function select (child){
+    if(child === null) { return this; }
+    child = getElement(child);
+
     if(child.parentNode !== this.element){
         throw new TypeError(((child.outerHTML) + " is not a child of " + (this.element.outerHTML)));
     }
@@ -131,6 +142,7 @@ DOMArrowSelect.prototype.select = function select (child){
         child.classList.add(this.selectID);
         this.current = child;
     }
+    return this;
 };
 DOMArrowSelect.prototype.unSelectAll = function unSelectAll (){
         var this$1 = this;
@@ -141,6 +153,7 @@ DOMArrowSelect.prototype.unSelectAll = function unSelectAll (){
         child.classList.remove(this$1.selectID);
     });
     this.current = null;
+    return this;
 };
 DOMArrowSelect.prototype.selectAll = function selectAll (){
         var this$1 = this;
@@ -150,6 +163,7 @@ DOMArrowSelect.prototype.selectAll = function selectAll (){
         list[i].classList.add(this$1.selectID);
     }
     this.current = list[list.length - 1];
+    return this;
 };
 
 function arrowSelect(element, options){

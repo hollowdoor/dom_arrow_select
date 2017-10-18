@@ -1,6 +1,6 @@
 import arrowSelect from '../';
 
-const as = arrowSelect(document.querySelector('#vertical'), {
+const as = arrowSelect({
     selectID: 'selected',
     selected(next, prev, edge){
         console.log('edge ', edge)
@@ -18,6 +18,8 @@ const as = arrowSelect(document.querySelector('#vertical'), {
         }
     }
 });
+
+as.focus('#vertical');
 
 setTimeout(()=>{
 
