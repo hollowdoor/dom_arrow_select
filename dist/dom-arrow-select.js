@@ -956,6 +956,7 @@ function getCorner(element, dir, ref){
 
     for(var i$1=0; i$1<depth; i$1++){
         el = parent;
+        if(!parent) { return; }
         parent = parent.parentNode;
         if(parent === element){
             return el;
@@ -1048,7 +1049,11 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
             var el = this$1.current;
             var next = null;
             if(!el){
-                next = getCorner(element, key, {reverse:true});
+                next = getCorner(element, key, {
+                    reverse:true,
+                    xrange: this$1.step[key].wrap,
+                    yrange: this$1.step[key].wrap
+                });
             }else{
                 next = step(el, key, this$1.step[key]);
             }

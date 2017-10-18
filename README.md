@@ -28,7 +28,7 @@ const as = arrowSelect(document.querySelector('#parent-id'), {
     step: {},
     //Selection class to keep track of selected elements
     selectID: 'dom-arrow-select-selected',
-    //Global options for dom-step
+    //range, and wrap are global options for dom-step
     //options.range, and options.wrap work for all directions
     //without their own options.
     range: 1,

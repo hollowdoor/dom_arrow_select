@@ -1,8 +1,12 @@
 li {
     border: 1px solid black;
 }
+#vertical {
+    margin: 0;
+}
 #vertical li {
     /*margin: 10px;*/
+    padding: 0;
 }
 #horizontal {
     padding: 0px;

@@ -88,7 +88,11 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
             var el = this$1.current;
             var next = null;
             if(!el){
-                next = getCorner(element, key, {reverse:true});
+                next = getCorner(element, key, {
+                    reverse:true,
+                    xrange: this$1.step[key].wrap,
+                    yrange: this$1.step[key].wrap
+                });
             }else{
                 next = domStep(el, key, this$1.step[key]);
             }

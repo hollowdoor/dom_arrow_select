@@ -44,7 +44,11 @@ class DOMArrowSelect {
                 let el = this.current;
                 let next = null;
                 if(!el){
-                    next = getCorner(element, key, {reverse:true});
+                    next = getCorner(element, key, {
+                        reverse:true,
+                        xrange: this.step[key].wrap,
+                        yrange: this.step[key].wrap
+                    });
                 }else{
                     next = domStep(el, key, this.step[key]);
                 }

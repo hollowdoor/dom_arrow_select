@@ -9,7 +9,7 @@ const as = arrowSelect(document.querySelector('#vertical'), {
     },
     step: {
         down: {
-            wrap: 5,
+            wrap: 10,
             range: 3
         },
         up: {
