@@ -5,6 +5,15 @@ import getCorner from 'dom-get-corner';
 import createStepOptions from './lib/step_options.js';
 import getKey from './lib/get_key.js';
 
+function isEdge(el, child){
+    if(el.children[el.children.length - 1] === child){
+        return 'last';
+    }else if(el.children[0] === child){
+        return 'first';
+    }
+    return null;
+}
+
 class DOMArrowSelect {
     constructor(element, {
         step = {},
@@ -28,6 +37,7 @@ class DOMArrowSelect {
         const tracker = this.tracker = events.track();
 
         events(document, tracker).on('keyup', event=>{
+
             let key = getKey(event.which || event.keyCode);
 
             if(key){
@@ -42,11 +52,10 @@ class DOMArrowSelect {
                 if(next){
                     //The parent is in the document
                     if(element.parentNode){
-                        selected.call(this, next, this.current);
+                        selected.call(this, next, this.current, isEdge(element, next));
                     }
                 }
             }
-
         });
 
         this.destroy = function(){

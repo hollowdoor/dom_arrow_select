@@ -1008,6 +1008,15 @@ function getKey(keyCode){
     return keySet[keyCode] || null;
 }
 
+function isEdge(el, child){
+    if(el.children[el.children.length - 1] === child){
+        return 'last';
+    }else if(el.children[0] === child){
+        return 'first';
+    }
+    return null;
+}
+
 var DOMArrowSelect = function DOMArrowSelect(element, ref){
     var this$1 = this;
     if ( ref === void 0 ) { ref = {}; }
@@ -1032,6 +1041,7 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
     var tracker = this.tracker = events.track();
 
     events(document, tracker).on('keyup', function (event){
+
         var key = getKey(event.which || event.keyCode);
 
         if(key){
@@ -1046,11 +1056,10 @@ var DOMArrowSelect = function DOMArrowSelect(element, ref){
             if(next){
                 //The parent is in the document
                 if(element.parentNode){
-                    selected.call(this$1, next, this$1.current);
+                    selected.call(this$1, next, this$1.current, isEdge(element, next));
                 }
             }
         }
-
     });
 
     this.destroy = function(){
@@ -1105,7 +1114,12 @@ function arrowSelect(element, options){
 
 var as = arrowSelect(document.querySelector('#vertical'), {
     selectID: 'selected',
-    /*step: {
+    selected: function selected(next, prev, edge){
+        console.log('edge ', edge);
+        this.unSelect(prev);
+        this.select(next);
+    },
+    step: {
         down: {
             wrap: 5,
             range: 3
@@ -1114,7 +1128,7 @@ var as = arrowSelect(document.querySelector('#vertical'), {
             wrap: 5,
             range: 3
         }
-    }*/
+    }
 });
 
 setTimeout(function (){

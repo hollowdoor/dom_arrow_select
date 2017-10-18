@@ -2,7 +2,12 @@ import arrowSelect from '../';
 
 const as = arrowSelect(document.querySelector('#vertical'), {
     selectID: 'selected',
-    /*step: {
+    selected(next, prev, edge){
+        console.log('edge ', edge)
+        this.unSelect(prev);
+        this.select(next);
+    },
+    step: {
         down: {
             wrap: 5,
             range: 3
@@ -11,7 +16,7 @@ const as = arrowSelect(document.querySelector('#vertical'), {
             wrap: 5,
             range: 3
         }
-    }*/
+    }
 });
 
 setTimeout(()=>{

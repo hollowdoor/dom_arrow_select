@@ -34,12 +34,15 @@ const as = arrowSelect(document.querySelector('#parent-id'), {
     range: 1,
     wrap: 5,
     //When an arrow key is pressed selected() is called
-    selected(next, prev){
+    selected(next, prev, edge){
         //prev is the previous element selected by arrowSelect
         this.unSelect(prev);
         //next is the element in the
         //direction of the arrow key input
         this.select(next);
+        //edge is first if next is the first element
+        //edge is last if next is the last element
+        //edge is null otherwise
     }
 });
 ```
