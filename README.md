@@ -101,6 +101,21 @@ Set `element` as the current parent. It's children will be selectable. `element`
 
 Pass a falsey value to `as.focus()` to temporarily turn off selections/de-selections made by `dom-arrow-select`.
 
+### as.focused(element)
+
+`as.focused()` returns false if `element` is not the currently focused element, and returns true otherwise.
+
+### as.step(direction)
+
+The direction parameter of `as.step()` can be one of these string values:
+
+* up
+* down
+* left
+* right
+
+Calling `as.step(direction)` is a manual way of selecting an element in the given direction. Usually you will want to allow the arrow keys to do the selection.
+
 ### as.select(element)
 
 Select the given child element. Passing null makes `as.select()` do nothing.

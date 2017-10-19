@@ -88,6 +88,11 @@ class DOMArrowSelect {
         this.element = getElement(element);
         return this;
     }
+    focused(element){
+        if(!element) return false;
+        let el = getElement(element);
+        return this.element === el;
+    }
     unSelect(child){
         if(child === null) return this;
         if(!this.element) return this;

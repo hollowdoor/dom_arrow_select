@@ -102,6 +102,11 @@ DOMArrowSelect.prototype.focus = function focus (element){
     this.element = getElement(element);
     return this;
 };
+DOMArrowSelect.prototype.focused = function focused (element){
+    if(!element) { return false; }
+    var el = getElement(element);
+    return this.element === el;
+};
 DOMArrowSelect.prototype.unSelect = function unSelect (child){
     if(child === null) { return this; }
     if(!this.element) { return this; }

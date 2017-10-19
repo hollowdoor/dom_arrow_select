@@ -1096,6 +1096,11 @@ DOMArrowSelect.prototype.focus = function focus (element){
     this.element = getElement(element);
     return this;
 };
+DOMArrowSelect.prototype.focused = function focused (element){
+    if(!element) { return false; }
+    var el = getElement(element);
+    return this.element === el;
+};
 DOMArrowSelect.prototype.unSelect = function unSelect (child){
     if(child === null) { return this; }
     if(!this.element) { return this; }
@@ -1185,12 +1190,13 @@ var as = arrowSelect({
         console.log('current ',current );
         console.log('side ',side);
         if(side === 'down'){
+            if(this.focused('#horizontal')) { return; }
             this.unSelect(current)
             .focus('#horizontal')
             .step(side);
             //.selectIndex(0);
         }else if(side === 'up'){
-            if(current === this.element.children[0]) { return; }
+            if(this.focused('#vertical')) { return; }
             this.unSelect(current)
             .focus('#vertical')
             .step(side);
