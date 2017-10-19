@@ -17,10 +17,20 @@ const as = arrowSelect({
         this.select(next);
     },
     step(side){
-        return directions[side];
+        return;// directions[side];
     },
-    outside(current){
+    outside(current, side){
         console.log('current ',current );
+        console.log('side ',side)
+        if(side === 'down'){
+            this.unSelect(current);
+            this.focus('#horizontal');
+            this.selectIndex(0);
+        }else if(side === 'up'){
+            this.unSelect(current);
+            this.focus('#vertical');
+            this.selectIndex(-1);
+        }
     }
     /*step: {
         down: {

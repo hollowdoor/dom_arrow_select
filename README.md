@@ -38,7 +38,7 @@ const as = arrowSelect({
         //direction of the arrow key input
         this.select(next);
     },
-    outside(current){
+    outside(current, side){
         //This is called when the next element is unreachable
         //either because of some funky step math,
         //or because the current direction leads
@@ -81,7 +81,7 @@ const as = arrowSelect({
     step(side){
         return directions[side];
     },
-    outside(current){
+    outside(current, side){
         //This probably won't get called
         //because of directions[side].wrap
     }
@@ -99,7 +99,7 @@ All methods return `this` for chaining.
 
 Set `element` as the current parent. It's children will be selectable. `element` must be a valid value for [dom-get-element](https://github.com/hollowdoor/dom_get_element).
 
-Pass a falsy value to `as.focus()` to temporarily turn off selections/de-selections made by `dom-arrow-select`.
+Pass a falsey value to `as.focus()` to temporarily turn off selections/de-selections made by `dom-arrow-select`.
 
 ### as.select(element)
 

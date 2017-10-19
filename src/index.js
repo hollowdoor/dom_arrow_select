@@ -57,7 +57,8 @@ class DOMArrowSelect {
                 }else{
                     outside.call(
                         this,
-                        this.current
+                        this.current,
+                        key
                     );
                 }
             }
@@ -68,7 +69,7 @@ class DOMArrowSelect {
         };
     }
     focus(element){
-        if(!!element){
+        if(!element){
             this.element = element;
             return this;
         }
@@ -77,6 +78,7 @@ class DOMArrowSelect {
     }
     unSelect(child){
         if(child === null) return this;
+        if(!this.element) return this;
         child = getElement(child);
 
         if(child){
@@ -92,6 +94,7 @@ class DOMArrowSelect {
     }
     select(child){
         if(child === null) return this;
+        if(!this.element) return this;
         child = getElement(child);
 
         if(child.parentNode !== this.element){
@@ -106,6 +109,8 @@ class DOMArrowSelect {
     }
     unSelectAll(){
 
+        if(!this.element) return this;
+
         arrayFrom(this.element.querySelectorAll('.'+this.selectID))
         .forEach(child=>{
             child.classList.remove(this.selectID);
@@ -114,11 +119,28 @@ class DOMArrowSelect {
         return this;
     }
     selectAll(){
+        if(!this.element) return this;
         let list = this.element.children;
         for(let i=0; i<list.length; i++){
             list[i].classList.add(this.selectID);
         }
         this.current = list[list.length - 1];
+        return this;
+    }
+    selectIndex(index){
+        if(!this.element) return this;
+        if(index < 0){
+            index = this.element.children.length + index;
+        }
+        this.select(this.element.children[index]);
+        return this;
+    }
+    deselectIndex(index){
+        if(!this.element) return this;
+        if(index < 0){
+            index = this.element.children.length + index;
+        }
+        this.unSelect(this.element.children[index]);
         return this;
     }
 }
