@@ -42,7 +42,10 @@ const as = arrowSelect({
         //This is called when the next element is unreachable
         //either because of some funky step math,
         //or because the current direction leads
-        //outside the parent element
+        //outside the focused parent element
+
+        //If options.step() returns with a wrap option
+        //outside() might not be called
     }
 }).focus(document.querySelector('#parent-id'));
 ```
@@ -76,7 +79,11 @@ const directions = {
 
 const as = arrowSelect({
     step(side){
-        directions[side];
+        return directions[side];
+    },
+    outside(current){
+        //This probably won't get called
+        //because of directions[side].wrap
     }
 }).focus('#parent-id');
 ```
