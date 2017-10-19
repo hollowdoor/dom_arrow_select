@@ -28,7 +28,7 @@ const as = arrowSelect({
     step: {},
     //Selection class to keep track of selected elements
     selectID: 'dom-arrow-select-selected',
-    //range, and wrap are global options for dom-step
+    //range, and wrap are instance wide options for dom-step
     //options.range, and options.wrap work for all directions
     //without their own options.
     range: 1,
@@ -102,6 +102,28 @@ Select all elements.
 ### as.unSelectAll()
 
 De-select any selected elements.
+
+### as.destroy()
+
+Use `as.destroy()` to clean up event listeners, or other values in memory when you discard an instance of `dom-arrow-select`.
+
+### as.step
+
+`as.step` is a property containing the `options.step` options object.
+
+### as.current
+
+`as.current` is the current focused parent element.
+
+### as.selectID
+
+This is the CSS class name used to identify selected children elements.
+
+### as.range, as.wrap
+
+`as.range`, and `as.wrap` are the instance wide properties used as defaults for [dom-step](https://github.com/hollowdoor/dom_step) instead of the `as.step` properties.
+
+`as.step` options take priority over `as.range`, and `as.wrap`.
 
 About
 ---
