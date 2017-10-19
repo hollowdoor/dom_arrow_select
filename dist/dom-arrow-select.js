@@ -1023,6 +1023,11 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
 
     this.element = null;
     this.current = null;
+    this._selected = selected;
+    this._outside = outside;
+    this._step = function(dir){
+        return step$$1.call(this, dir) || {};
+    };
 
     Object.defineProperty(this, 'selectID', {
         value: selectID,
@@ -1040,38 +1045,48 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         var key = getKey(event.which || event.keyCode);
 
         if(key && element && element.parentNode){
-            var el = this$1.current;
-            var next = null;
-            var opts = getStepOpts(key);
-            if(!el){
-                next = getCorner(element, key, {
-                    reverse:true,
-                    xrange: opts.wrap,
-                    yrange: opts.wrap
-                });
-            }else{
-                next = step(el, key, opts);
-            }
-
-            if(next){
-                selected.call(
-                    this$1,
-                    next,
-                    this$1.current
-                );
-            }else{
-                outside.call(
-                    this$1,
-                    this$1.current,
-                    key
-                );
-            }
+            this$1.step(key);
         }
     });
 
     this.destroy = function(){
         tracker.clear();
     };
+};
+DOMArrowSelect.prototype.step = function step$$1 (key){
+    var element = this.element;
+    var el = this.current;
+    var next = null;
+    var ref = this;
+        var _step = ref._step;
+        var _selected = ref._selected;
+        var _outside = ref._outside;
+    var opts = _step.call(this, key);
+
+    if(!this.current){
+        next = getCorner(element, key, {
+            reverse:true,
+            xrange: opts.wrap,
+            yrange: opts.wrap
+        });
+    }else{
+        next = step(this.current, key, opts);
+    }
+
+    if(next){
+        _selected.call(
+            this,
+            next,
+            this.current
+        );
+    }else{
+        _outside.call(
+            this,
+            this.current,
+            key
+        );
+    }
+    return this;
 };
 DOMArrowSelect.prototype.focus = function focus (element){
     if(!element){
@@ -1120,7 +1135,7 @@ DOMArrowSelect.prototype.unSelectAll = function unSelectAll (){
 
     arrayFrom(this.element.querySelectorAll('.'+this.selectID))
     .forEach(function (child){
-        child.classList.remove(this$1.selectID);
+        this$1.unSelect(child);
     });
     this.current = null;
     return this;
@@ -1131,7 +1146,7 @@ DOMArrowSelect.prototype.selectAll = function selectAll (){
     if(!this.element) { return this; }
     var list = this.element.children;
     for(var i=0; i<list.length; i++){
-        list[i].classList.add(this$1.selectID);
+        this$1.select(list[i]);
     }
     this.current = list[list.length - 1];
     return this;

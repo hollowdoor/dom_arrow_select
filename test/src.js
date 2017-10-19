@@ -23,13 +23,17 @@ const as = arrowSelect({
         console.log('current ',current );
         console.log('side ',side)
         if(side === 'down'){
-            this.unSelect(current);
-            this.focus('#horizontal');
-            this.selectIndex(0);
+            
+            this.unSelect(current)
+            .focus('#horizontal')
+            .step(side);
+            //.selectIndex(0);
         }else if(side === 'up'){
-            this.unSelect(current);
-            this.focus('#vertical');
-            this.selectIndex(-1);
+            if(current === this.element.children[0]) return;
+            this.unSelect(current)
+            .focus('#vertical')
+            .step(side);
+            //.selectIndex(-1);
         }
     }
     /*step: {

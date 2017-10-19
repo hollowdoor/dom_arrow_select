@@ -18,6 +18,11 @@ class DOMArrowSelect {
 
         this.element = null;
         this.current = null;
+        this._selected = selected;
+        this._outside = outside;
+        this._step = function(dir){
+            return step.call(this, dir) || {};
+        };
 
         Object.defineProperty(this, 'selectID', {
             value: selectID,
@@ -35,38 +40,45 @@ class DOMArrowSelect {
             let key = getKey(event.which || event.keyCode);
 
             if(key && element && element.parentNode){
-                let el = this.current;
-                let next = null;
-                let opts = getStepOpts(key);
-                if(!el){
-                    next = getCorner(element, key, {
-                        reverse:true,
-                        xrange: opts.wrap,
-                        yrange: opts.wrap
-                    });
-                }else{
-                    next = domStep(el, key, opts);
-                }
-
-                if(next){
-                    selected.call(
-                        this,
-                        next,
-                        this.current
-                    );
-                }else{
-                    outside.call(
-                        this,
-                        this.current,
-                        key
-                    );
-                }
+                this.step(key);
             }
         });
 
         this.destroy = function(){
             tracker.clear();
         };
+    }
+    step(key){
+        let element = this.element;
+        let el = this.current;
+        let next = null;
+        let {_step, _selected, _outside} = this;
+        let opts = _step.call(this, key);
+
+        if(!this.current){
+            next = getCorner(element, key, {
+                reverse:true,
+                xrange: opts.wrap,
+                yrange: opts.wrap
+            });
+        }else{
+            next = domStep(this.current, key, opts);
+        }
+
+        if(next){
+            _selected.call(
+                this,
+                next,
+                this.current
+            );
+        }else{
+            _outside.call(
+                this,
+                this.current,
+                key
+            );
+        }
+        return this;
     }
     focus(element){
         if(!element){
@@ -113,7 +125,7 @@ class DOMArrowSelect {
 
         arrayFrom(this.element.querySelectorAll('.'+this.selectID))
         .forEach(child=>{
-            child.classList.remove(this.selectID);
+            this.unSelect(child);
         });
         this.current = null;
         return this;
@@ -122,7 +134,7 @@ class DOMArrowSelect {
         if(!this.element) return this;
         let list = this.element.children;
         for(let i=0; i<list.length; i++){
-            list[i].classList.add(this.selectID);
+            this.select(list[i]);
         }
         this.current = list[list.length - 1];
         return this;
