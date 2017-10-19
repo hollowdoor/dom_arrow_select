@@ -93,11 +93,13 @@ API
 
 See [dom-get-element](https://github.com/hollowdoor/dom_get_element) to see what you can pass to `as.focus()`, `as.select()`, and `as.unSelect()`.
 
+All methods return `this` for chaining.
+
 ### as.focus(element)
 
 Set `element` as the current parent. It's children will be selectable. `element` must be a valid value for [dom-get-element](https://github.com/hollowdoor/dom_get_element).
 
-All methods return `this` for chaining.
+Pass a falsy value to `as.focus()` to temporarily turn off selections/de-selections made by `dom-arrow-select`.
 
 ### as.select(element)
 

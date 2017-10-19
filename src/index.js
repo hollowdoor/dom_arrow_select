@@ -68,6 +68,10 @@ class DOMArrowSelect {
         };
     }
     focus(element){
+        if(!!element){
+            this.element = element;
+            return this;
+        }
         this.element = getElement(element);
         return this;
     }
