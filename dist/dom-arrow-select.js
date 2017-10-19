@@ -998,40 +998,6 @@ function getElement(element){
 
 }
 
-function stepOption(opts, options, step, self){
-    opts[step] = {};
-    var range = options.range;
-    var wrap = options.wrap;
-    Object.defineProperties(opts[step], {
-        range: {
-            set: function set(v){
-                range = v;
-            },
-            get: function get(){
-                return range || self.range;
-            }
-        },
-        wrap: {
-            set: function set(v){
-                wrap = v;
-            },
-            get: function get(){
-                return wrap || self.wrap;
-            }
-        }
-    });
-    return opts;
-}
-
-function createStepOptions(options, self){
-    var opts = {};
-    stepOption(opts, options, 'down', self);
-    stepOption(opts, options, 'up', self);
-    stepOption(opts, options, 'left', self);
-    stepOption(opts, options, 'right', self);
-    return options;
-}
-
 var keySet = {
     '37': 'left',
     '38': 'up',
@@ -1043,35 +1009,29 @@ function getKey(keyCode){
     return keySet[keyCode] || null;
 }
 
-function isEdge(el, child){
-    if(el.children[el.children.length - 1] === child){
-        return 'last';
-    }else if(el.children[0] === child){
-        return 'first';
-    }
-    return null;
-}
-
 var DOMArrowSelect = function DOMArrowSelect(ref){
     var this$1 = this;
     if ( ref === void 0 ) ref = {};
-    var step$$1 = ref.step; if ( step$$1 === void 0 ) step$$1 = {};
     var selectID = ref.selectID; if ( selectID === void 0 ) selectID = 'dom-arrow-select-selected';
     var selected = ref.selected; if ( selected === void 0 ) selected = function(next, prev){
         this.unSelect(prev);
         this.select(next);
     };
-    var range = ref.range; if ( range === void 0 ) range = 1;
-    var wrap = ref.wrap; if ( wrap === void 0 ) wrap = 5;
+    var outside = ref.outside; if ( outside === void 0 ) outside = function(){};
+    var step$$1 = ref.step; if ( step$$1 === void 0 ) step$$1 = function(){};
 
 
-    this.range = range;
-    this.wrap = wrap;
     this.element = null;
     this.current = null;
-    this.selectID = selectID;
 
-    this.step = createStepOptions(step$$1, this);
+    Object.defineProperty(this, 'selectID', {
+        value: selectID,
+        enumerable: true
+    });
+
+    var getStepOpts = function (dir){
+        return step$$1.call(this$1, dir) || {};
+    };
 
     var tracker = this.tracker = events.track();
 
@@ -1079,24 +1039,31 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         var element = this$1.element;
         var key = getKey(event.which || event.keyCode);
 
-        if(key){
+        if(key && element.parentNode){
             var el = this$1.current;
             var next = null;
+            var opts = getStepOpts(key);
             if(!el){
                 next = getCorner(element, key, {
                     reverse:true,
-                    xrange: this$1.step[key].wrap,
-                    yrange: this$1.step[key].wrap
+                    xrange: opts.wrap,
+                    yrange: opts.wrap
                 });
             }else{
-                next = step(el, key, this$1.step[key]);
+                next = step(el, key, opts);
             }
 
             if(next){
-                //The parent is in the document
-                if(element.parentNode){
-                    selected.call(this$1, next, this$1.current, isEdge(element, next));
-                }
+                selected.call(
+                    this$1,
+                    next,
+                    this$1.current
+                );
+            }else{
+                outside.call(
+                    this$1,
+                    this$1.current
+                );
             }
         }
     });

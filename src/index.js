@@ -3,37 +3,30 @@ import domStep from 'dom-step';
 import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
 import getElement from 'dom-get-element';
-import createStepOptions from './lib/step_options.js';
 import getKey from './lib/get_key.js';
-
-function isEdge(el, child){
-    if(el.children[el.children.length - 1] === child){
-        return 'last';
-    }else if(el.children[0] === child){
-        return 'first';
-    }
-    return null;
-}
 
 class DOMArrowSelect {
     constructor({
-        step = {},
         selectID = 'dom-arrow-select-selected',
         selected = function(next, prev){
             this.unSelect(prev);
             this.select(next);
         },
-        range = 1,
-        wrap = 5
+        outside = function(){},
+        step = function(){}
     } = {}){
 
-        this.range = range;
-        this.wrap = wrap;
         this.element = null;
         this.current = null;
-        this.selectID = selectID;
 
-        this.step = createStepOptions(step, this);
+        Object.defineProperty(this, 'selectID', {
+            value: selectID,
+            enumerable: true
+        });
+
+        const getStepOpts = dir=>{
+            return step.call(this, dir) || {};
+        };
 
         const tracker = this.tracker = events.track();
 
@@ -41,24 +34,31 @@ class DOMArrowSelect {
             let element = this.element;
             let key = getKey(event.which || event.keyCode);
 
-            if(key){
+            if(key && element.parentNode){
                 let el = this.current;
                 let next = null;
+                let opts = getStepOpts(key);
                 if(!el){
                     next = getCorner(element, key, {
                         reverse:true,
-                        xrange: this.step[key].wrap,
-                        yrange: this.step[key].wrap
+                        xrange: opts.wrap,
+                        yrange: opts.wrap
                     });
                 }else{
-                    next = domStep(el, key, this.step[key]);
+                    next = domStep(el, key, opts);
                 }
 
                 if(next){
-                    //The parent is in the document
-                    if(element.parentNode){
-                        selected.call(this, next, this.current, isEdge(element, next));
-                    }
+                    selected.call(
+                        this,
+                        next,
+                        this.current
+                    );
+                }else{
+                    outside.call(
+                        this,
+                        this.current
+                    );
                 }
             }
         });

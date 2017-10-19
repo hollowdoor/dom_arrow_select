@@ -25,53 +25,58 @@ import arrowSelect from 'dom-arrow-select';
 
 const as = arrowSelect({
     //Step options for dom-step
-    step: {},
+    step(side){
+        //returns undefined as the default
+    },
     //Selection class to keep track of selected elements
     selectID: 'dom-arrow-select-selected',
-    //range, and wrap are instance wide options for dom-step
-    //options.range, and options.wrap work for all directions
-    //without their own options.
-    range: 1,
-    wrap: 5,
     //When an arrow key is pressed selected() is called
-    selected(next, prev, edge){
+    selected(next, prev){
         //prev is the previous element selected by arrowSelect
         this.unSelect(prev);
         //next is the element in the
         //direction of the arrow key input
         this.select(next);
-        //edge is 'first' if next is the first element
-        //edge is 'last' if next is the last element
-        //edge is null otherwise
+    },
+    outside(current){
+        //This is called when the next element is unreachable
+        //either because of some funky step math,
+        //or because the current direction leads
+        //outside the parent element
     }
 }).focus(document.querySelector('#parent-id'));
 ```
 
-### options.step
+### options.step()
 
-[dom-step](https://github.com/hollowdoor/dom_step) is an internal dependency. `options.step` should be the options you would like to pass to each kind of step.
+[dom-step](https://github.com/hollowdoor/dom_step) is an internal dependency. `options.step()` should return options you would like to pass to each kind of step. See [dom-step](https://github.com/hollowdoor/dom_step) to find out what you can use this for.
 
 ```javascript
 import arrowSelect from 'dom-arrow-select';
+//Here the directions are all the same
+//You can modify these based on the situation
+const directions = {
+    down: {
+        wrap: 5,
+        range: 3
+    },
+    up: {
+        wrap: 5,
+        range: 3
+    },
+    right: {
+        wrap: 5,
+        range: 3
+    },
+    left: {
+        wrap: 5,
+        range: 3
+    }
+};
 
 const as = arrowSelect({
-    step: {
-        down: {
-            wrap: 5,
-            range: 3
-        },
-        up: {
-            wrap: 5,
-            range: 3
-        },
-        right: {
-            wrap: 5,
-            range: 3
-        },
-        left: {
-            wrap: 5,
-            range: 3
-        },
+    step(side){
+        directions[side];
     }
 }).focus('#parent-id');
 ```
@@ -107,23 +112,13 @@ De-select any selected elements.
 
 Use `as.destroy()` to clean up event listeners, or other values in memory when you discard an instance of `dom-arrow-select`.
 
-### as.step
-
-`as.step` is a property containing the `options.step` options object.
-
 ### as.current
 
 `as.current` is the current focused parent element.
 
 ### as.selectID
 
-This is the CSS class name used to identify selected children elements.
-
-### as.range, as.wrap
-
-`as.range`, and `as.wrap` are the instance wide properties used as defaults for [dom-step](https://github.com/hollowdoor/dom_step) instead of the `as.step` properties.
-
-`as.step` options take priority over `as.range`, and `as.wrap`.
+This is the CSS class name used to identify selected children elements. `as.selectID` is read only.
 
 About
 ---
