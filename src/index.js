@@ -34,7 +34,7 @@ class DOMArrowSelect {
             let element = this.element;
             let key = getKey(event.which || event.keyCode);
 
-            if(key && element.parentNode){
+            if(key && element && element.parentNode){
                 let el = this.current;
                 let next = null;
                 let opts = getStepOpts(key);

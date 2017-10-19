@@ -49,7 +49,7 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         var element = this$1.element;
         var key = getKey(event.which || event.keyCode);
 
-        if(key && element.parentNode){
+        if(key && element && element.parentNode){
             var el = this$1.current;
             var next = null;
             var opts = getStepOpts(key);
