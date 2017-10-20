@@ -1021,7 +1021,7 @@ var keys$1 = rawObject({
 var enumerable = true;
 var configurable = true;
 
-events(document).on('keydown', function (event){
+document.addEventListener('keydown', function (event){
     keys$1.ctrl = event.metaKey || event.ctrlKey;
     keys$1.shift = event.shiftKey;
     keys$1.alt = event.altKey;
@@ -1029,7 +1029,7 @@ events(document).on('keydown', function (event){
     keys$1.key = event.key;
 });
 
-events(document).on('keyup', function (event){
+document.addEventListener('keyup', function (event){
     keys$1.ctrl = keys$1.shift = keys$1.alt = false;
     keys$1.key = keys$1.keyCode = keys$1.which = null;
 });

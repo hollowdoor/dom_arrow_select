@@ -1,4 +1,3 @@
-import events from 'dom-eve';
 import rawObject from 'raw-object';
 
 const keys = rawObject({
@@ -13,7 +12,7 @@ const keys = rawObject({
 const enumerable = true;
 const configurable = true;
 
-events(document).on('keydown', event=>{
+document.addEventListener('keydown', event=>{
     keys.ctrl = event.metaKey || event.ctrlKey;
     keys.shift = event.shiftKey;
     keys.alt = event.altKey;
@@ -21,7 +20,7 @@ events(document).on('keydown', event=>{
     keys.key = event.key;
 });
 
-events(document).on('keyup', event=>{
+document.addEventListener('keyup', event=>{
     keys.ctrl = keys.shift = keys.alt = false;
     keys.key = keys.keyCode = keys.which = null;
 });
