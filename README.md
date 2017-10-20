@@ -132,6 +132,12 @@ Select all elements.
 
 De-select any selected elements.
 
+### as.swap(element, direction)
+
+`as.swap()` is a convenience method that does `as.unSelectAll()`, `as.focus(element)`, and `as.step(direction)` in this order.
+
+The direction argument is optional. If you don't set the `direction` argument then `as.swap()` does `as.unSelectAll()`, and `as.focus(element)` only.
+
 ### as.destroy()
 
 Use `as.destroy()` to clean up event listeners, or other values in memory when you discard an instance of `dom-arrow-select`.
@@ -143,6 +149,18 @@ Use `as.destroy()` to clean up event listeners, or other values in memory when y
 ### as.selectID
 
 This is the CSS class name used to identify selected children elements. `as.selectID` is read only.
+
+**WARNING!:** Some infinite recursion is possible when combining these methods, and options:
+
+* options.selected()
+* options.outside()
+* options.step()
+* as.select()
+* as.step()
+* as.unSelect()
+* as.swap()
+
+Don't worry too much. It's just good to be aware of this.
 
 About
 ---

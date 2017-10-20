@@ -10,6 +10,17 @@ const directions = {
     }
 };
 
+const swap = {
+    down(as, side){
+        if(as.focused('#horizontal')) return;
+        as.swap('#horizontal', side);
+    },
+    up(as, side){
+        if(as.focused('#vertical')) return;
+        as.swap('#vertical', side);
+    }
+};
+
 const as = arrowSelect({
     selectID: 'selected',
     selected(next, prev){
@@ -22,19 +33,7 @@ const as = arrowSelect({
     outside(current, side){
         console.log('current ',current );
         console.log('side ',side)
-        if(side === 'down'){
-            if(this.focused('#horizontal')) return;
-            this.unSelect(current)
-            .focus('#horizontal')
-            .step(side);
-            //.selectIndex(0);
-        }else if(side === 'up'){
-            if(this.focused('#vertical')) return;
-            this.unSelect(current)
-            .focus('#vertical')
-            .step(side);
-            //.selectIndex(-1);
-        }
+        if(swap[side]) swap[side](this, side);
     }
     /*step: {
         down: {

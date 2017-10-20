@@ -1025,7 +1025,7 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
     this.current = null;
     this._selected = selected;
     this._outside = outside;
-    this._step = function(dir){
+    this._stepOpts = function(dir){
         return step$$1.call(this, dir) || {};
     };
 
@@ -1034,9 +1034,9 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         enumerable: true
     });
 
-    var getStepOpts = function (dir){
-        return step$$1.call(this$1, dir) || {};
-    };
+    /*const getStepOpts = dir=>{
+        return step.call(this, dir) || {};
+    };*/
 
     var tracker = this.tracker = events.track();
 
@@ -1058,10 +1058,10 @@ DOMArrowSelect.prototype.step = function step$$1 (key){
     var el = this.current;
     var next = null;
     var ref = this;
-        var _step = ref._step;
+        var _stepOpts = ref._stepOpts;
         var _selected = ref._selected;
         var _outside = ref._outside;
-    var opts = _step.call(this, key);
+    var opts = _stepOpts.call(this, key);
 
     if(!this.current){
         next = getCorner(element, key, {
@@ -1100,6 +1100,12 @@ DOMArrowSelect.prototype.focused = function focused (element){
     if(!element) { return false; }
     var el = getElement(element);
     return this.element === el;
+};
+DOMArrowSelect.prototype.swap = function swap (element, direction){
+    if(typeof direction !== 'string'){
+        return this.unSelectAll().focus(element);
+    }
+    return this.unSelectAll().focus(element).step(direction);
 };
 DOMArrowSelect.prototype.unSelect = function unSelect (child){
     if(child === null) { return this; }
@@ -1177,6 +1183,17 @@ function arrowSelect(element, options){
     return new DOMArrowSelect(element, options);
 }
 
+var swap = {
+    down: function down(as, side){
+        if(as.focused('#horizontal')) { return; }
+        as.swap('#horizontal', side);
+    },
+    up: function up(as, side){
+        if(as.focused('#vertical')) { return; }
+        as.swap('#vertical', side);
+    }
+};
+
 var as = arrowSelect({
     selectID: 'selected',
     selected: function selected(next, prev){
@@ -1189,19 +1206,7 @@ var as = arrowSelect({
     outside: function outside(current, side){
         console.log('current ',current );
         console.log('side ',side);
-        if(side === 'down'){
-            if(this.focused('#horizontal')) { return; }
-            this.unSelect(current)
-            .focus('#horizontal')
-            .step(side);
-            //.selectIndex(0);
-        }else if(side === 'up'){
-            if(this.focused('#vertical')) { return; }
-            this.unSelect(current)
-            .focus('#vertical')
-            .step(side);
-            //.selectIndex(-1);
-        }
+        if(swap[side]) { swap[side](this, side); }
     }
     /*step: {
         down: {

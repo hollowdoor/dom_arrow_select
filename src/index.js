@@ -20,7 +20,7 @@ class DOMArrowSelect {
         this.current = null;
         this._selected = selected;
         this._outside = outside;
-        this._step = function(dir){
+        this._stepOpts = function(dir){
             return step.call(this, dir) || {};
         };
 
@@ -28,10 +28,6 @@ class DOMArrowSelect {
             value: selectID,
             enumerable: true
         });
-
-        const getStepOpts = dir=>{
-            return step.call(this, dir) || {};
-        };
 
         const tracker = this.tracker = events.track();
 
@@ -52,8 +48,8 @@ class DOMArrowSelect {
         let element = this.element;
         let el = this.current;
         let next = null;
-        let {_step, _selected, _outside} = this;
-        let opts = _step.call(this, key);
+        let {_stepOpts, _selected, _outside} = this;
+        let opts = _stepOpts.call(this, key);
 
         if(!this.current){
             next = getCorner(element, key, {
@@ -92,6 +88,12 @@ class DOMArrowSelect {
         if(!element) return false;
         let el = getElement(element);
         return this.element === el;
+    }
+    swap(element, direction){
+        if(typeof direction !== 'string'){
+            return this.unSelectAll().focus(element);
+        }
+        return this.unSelectAll().focus(element).step(direction);
     }
     unSelect(child){
         if(child === null) return this;
