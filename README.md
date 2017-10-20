@@ -91,7 +91,7 @@ const as = arrowSelect({
 API
 ---
 
-See [dom-get-element](https://github.com/hollowdoor/dom_get_element) to see what you can pass to `as.focus()`, `as.select()`, and `as.unSelect()`.
+See [dom-get-element](https://github.com/hollowdoor/dom_get_element) to see what you can pass to `as.focus()`, `as.select()`, `as.unSelect()`, and `as.swap()`.
 
 All methods return `this` for chaining.
 
