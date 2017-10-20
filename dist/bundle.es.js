@@ -40,10 +40,6 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         enumerable: true
     });
 
-    /*const getStepOpts = dir=>{
-        return step.call(this, dir) || {};
-    };*/
-
     var tracker = this.tracker = events.track();
 
     events(document, tracker).on('keyup', function (event){
@@ -176,7 +172,7 @@ DOMArrowSelect.prototype.selectIndex = function selectIndex (index){
     this.select(this.element.children[index]);
     return this;
 };
-DOMArrowSelect.prototype.deselectIndex = function deselectIndex (index){
+DOMArrowSelect.prototype.unSelectIndex = function unSelectIndex (index){
     if(!this.element) { return this; }
     if(index < 0){
         index = this.element.children.length + index;

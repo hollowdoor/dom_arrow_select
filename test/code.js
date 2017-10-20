@@ -1034,10 +1034,6 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         enumerable: true
     });
 
-    /*const getStepOpts = dir=>{
-        return step.call(this, dir) || {};
-    };*/
-
     var tracker = this.tracker = events.track();
 
     events(document, tracker).on('keyup', function (event){
@@ -1170,7 +1166,7 @@ DOMArrowSelect.prototype.selectIndex = function selectIndex (index){
     this.select(this.element.children[index]);
     return this;
 };
-DOMArrowSelect.prototype.deselectIndex = function deselectIndex (index){
+DOMArrowSelect.prototype.unSelectIndex = function unSelectIndex (index){
     if(!this.element) { return this; }
     if(index < 0){
         index = this.element.children.length + index;
@@ -1208,16 +1204,6 @@ var as = arrowSelect({
         console.log('side ',side);
         if(swap[side]) { swap[side](this, side); }
     }
-    /*step: {
-        down: {
-            wrap: 10,
-            range: 3
-        },
-        up: {
-            wrap: 5,
-            range: 3
-        }
-    }*/
 });
 
 as.focus('#vertical');

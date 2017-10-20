@@ -20,6 +20,8 @@ arrowSelect({
 With Defaults
 ---------
 
+All options are optional. :)
+
 ```javascript
 import arrowSelect from 'dom-arrow-select';
 
@@ -132,6 +134,14 @@ Select all elements.
 
 De-select any selected elements.
 
+### as.selectIndex(index)
+
+Select a child element by integer index. Negative numbers will go backwards from the length of the parent's children.
+
+### as.unSelectIndex(index)
+
+`as.unSelectIndex()` works like `as.selectIndex()` except deselects by index.
+
 ### as.swap(element, direction)
 
 `as.swap()` is a convenience method that does `as.unSelectAll()`, `as.focus(element)`, and `as.step(direction)` in this order.
@@ -144,7 +154,11 @@ Use `as.destroy()` to clean up event listeners, or other values in memory when y
 
 ### as.current
 
-`as.current` is the current focused parent element.
+`as.current` is the current selected child element.
+
+### as.element
+
+`as.element` is the current focused parent element.
 
 ### as.selectID
 

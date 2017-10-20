@@ -154,7 +154,7 @@ class DOMArrowSelect {
         this.select(this.element.children[index]);
         return this;
     }
-    deselectIndex(index){
+    unSelectIndex(index){
         if(!this.element) return this;
         if(index < 0){
             index = this.element.children.length + index;
