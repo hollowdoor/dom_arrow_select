@@ -35,16 +35,6 @@ const as = arrowSelect({
         console.log('side ',side)
         if(swap[side]) swap[side](this, side);
     }
-    /*step: {
-        down: {
-            wrap: 10,
-            range: 3
-        },
-        up: {
-            wrap: 5,
-            range: 3
-        }
-    }*/
 });
 
 as.focus('#vertical');
