@@ -3,6 +3,7 @@ import domStep from 'dom-step';
 import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
 import getElement from 'dom-get-element';
+import rawObject from 'raw-object';
 
 var keySet = {
     '37': 'left',
@@ -13,6 +14,52 @@ var keySet = {
 
 function getKey(keyCode){
     return keySet[keyCode] || null;
+}
+
+var keys = rawObject({
+    ctrl: false,
+    shift: false,
+    alt: false,
+    key: null,
+    keyCode: null,
+    which: null
+});
+
+var enumerable = true;
+var configurable = true;
+
+events(document).on('keydown', function (event){
+    keys.ctrl = event.metaKey || event.ctrlKey;
+    keys.shift = event.shiftKey;
+    keys.alt = event.altKey;
+    keys.keyCode = keys.which = (event.which || event.keyCode);
+    keys.key = event.key;
+});
+
+events(document).on('keyup', function (event){
+    keys.ctrl = keys.shift = keys.alt = false;
+    keys.key = keys.keyCode = keys.which = null;
+});
+
+function defineProp(dest, prop){
+    Object.defineProperty(dest, prop, {
+        get: function get(){ return keys[prop]; },
+        enumerable: enumerable,
+        configurable: configurable
+    });
+}
+
+function mixinKeys(dest){
+    for(var name in keys){
+        if(!dest.hasOwnProperty(name))
+            { defineProp(dest, name); }
+    }
+}
+
+function cleanKeysMixin(dest){
+    for(var name in keys){
+        delete dest[name];
+    }
 }
 
 var DOMArrowSelect = function DOMArrowSelect(ref){
@@ -40,9 +87,12 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         enumerable: true
     });
 
+    mixinKeys(this);
+
     var tracker = this.tracker = events.track();
 
-    events(document, tracker).on('keyup', function (event){
+    events(document, tracker).on('keydown', function (event){
+
         var element = this$1.element;
         var key = getKey(event.which || event.keyCode);
 
@@ -53,6 +103,7 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
 
     this.destroy = function(){
         tracker.clear();
+        cleanKeysMixin(this);
     };
 };
 DOMArrowSelect.prototype.step = function step (key){

@@ -4,6 +4,7 @@ import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
 import getElement from 'dom-get-element';
 import getKey from './lib/get_key.js';
+import { mixinKeys, cleanKeysMixin } from './lib/keys_mixin.js';
 
 class DOMArrowSelect {
     constructor({
@@ -29,9 +30,12 @@ class DOMArrowSelect {
             enumerable: true
         });
 
+        mixinKeys(this);
+
         const tracker = this.tracker = events.track();
 
-        events(document, tracker).on('keyup', event=>{
+        events(document, tracker).on('keydown', event=>{
+
             let element = this.element;
             let key = getKey(event.which || event.keyCode);
 
@@ -42,6 +46,7 @@ class DOMArrowSelect {
 
         this.destroy = function(){
             tracker.clear();
+            cleanKeysMixin(this);
         };
     }
     step(key){

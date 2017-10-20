@@ -1009,6 +1009,52 @@ function getKey(keyCode){
     return keySet[keyCode] || null;
 }
 
+var keys$1 = rawObject({
+    ctrl: false,
+    shift: false,
+    alt: false,
+    key: null,
+    keyCode: null,
+    which: null
+});
+
+var enumerable = true;
+var configurable = true;
+
+events(document).on('keydown', function (event){
+    keys$1.ctrl = event.metaKey || event.ctrlKey;
+    keys$1.shift = event.shiftKey;
+    keys$1.alt = event.altKey;
+    keys$1.keyCode = keys$1.which = (event.which || event.keyCode);
+    keys$1.key = event.key;
+});
+
+events(document).on('keyup', function (event){
+    keys$1.ctrl = keys$1.shift = keys$1.alt = false;
+    keys$1.key = keys$1.keyCode = keys$1.which = null;
+});
+
+function defineProp(dest, prop){
+    Object.defineProperty(dest, prop, {
+        get: function get(){ return keys$1[prop]; },
+        enumerable: enumerable,
+        configurable: configurable
+    });
+}
+
+function mixinKeys(dest){
+    for(var name in keys$1){
+        if(!dest.hasOwnProperty(name))
+            { defineProp(dest, name); }
+    }
+}
+
+function cleanKeysMixin(dest){
+    for(var name in keys$1){
+        delete dest[name];
+    }
+}
+
 var DOMArrowSelect = function DOMArrowSelect(ref){
     var this$1 = this;
     if ( ref === void 0 ) ref = {};
@@ -1034,9 +1080,12 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
         enumerable: true
     });
 
+    mixinKeys(this);
+
     var tracker = this.tracker = events.track();
 
-    events(document, tracker).on('keyup', function (event){
+    events(document, tracker).on('keydown', function (event){
+
         var element = this$1.element;
         var key = getKey(event.which || event.keyCode);
 
@@ -1047,6 +1096,7 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
 
     this.destroy = function(){
         tracker.clear();
+        cleanKeysMixin(this);
     };
 };
 DOMArrowSelect.prototype.step = function step$$1 (key){

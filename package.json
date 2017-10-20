@@ -30,7 +30,8 @@
     "dom-get-element": "^1.0.0",
     "dom-next-element-sibling": "^1.0.0",
     "dom-step": "^2.0.0",
-    "object-assign": "^4.1.1"
+    "object-assign": "^4.1.1",
+    "raw-object": "^1.0.0"
   },
   "main": "dist/bundle.js",
   "jsnext:main": "dist/bundle.es.js",

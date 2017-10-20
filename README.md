@@ -164,6 +164,10 @@ Use `as.destroy()` to clean up event listeners, or other values in memory when y
 
 This is the CSS class name used to identify selected children elements. `as.selectID` is read only.
 
+### as.ctrl, as.shift, as.alt
+
+These are true if their keys are being held down; false if their keys are not being held.
+
 **WARNING!:** Some infinite recursion is possible when combining these methods, and options:
 
 * options.selected()

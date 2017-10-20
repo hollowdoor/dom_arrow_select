@@ -24,6 +24,9 @@ const swap = {
 const as = arrowSelect({
     selectID: 'selected',
     selected(next, prev){
+        console.log('ctrl ',this.ctrl)
+        console.log('shift ',this.shift)
+        console.log('alt ',this.alt)
         this.unSelect(prev);
         this.select(next);
     },
