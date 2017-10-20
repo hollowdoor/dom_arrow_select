@@ -3,7 +3,7 @@ import domStep from 'dom-step';
 import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
 import getElement from 'dom-get-element';
-import rawObject from 'raw-object';
+import { cleanKeysMixin, mixinKeys } from 'dom-keys-mixin';
 
 var keySet = {
     '37': 'left',
@@ -14,52 +14,6 @@ var keySet = {
 
 function getKey(keyCode){
     return keySet[keyCode] || null;
-}
-
-var keys = rawObject({
-    ctrl: false,
-    shift: false,
-    alt: false,
-    key: null,
-    keyCode: null,
-    which: null
-});
-
-var enumerable = true;
-var configurable = true;
-
-document.addEventListener('keydown', function (event){
-    keys.ctrl = event.metaKey || event.ctrlKey;
-    keys.shift = event.shiftKey;
-    keys.alt = event.altKey;
-    keys.keyCode = keys.which = (event.which || event.keyCode);
-    keys.key = event.key;
-});
-
-document.addEventListener('keyup', function (event){
-    keys.ctrl = keys.shift = keys.alt = false;
-    keys.key = keys.keyCode = keys.which = null;
-});
-
-function defineProp(dest, prop){
-    Object.defineProperty(dest, prop, {
-        get: function get(){ return keys[prop]; },
-        enumerable: enumerable,
-        configurable: configurable
-    });
-}
-
-function mixinKeys(dest){
-    for(var name in keys){
-        if(!dest.hasOwnProperty(name))
-            { defineProp(dest, name); }
-    }
-}
-
-function cleanKeysMixin(dest){
-    for(var name in keys){
-        delete dest[name];
-    }
 }
 
 var DOMArrowSelect = function DOMArrowSelect(ref){

@@ -998,18 +998,7 @@ function getElement(element){
 
 }
 
-var keySet = {
-    '37': 'left',
-    '38': 'up',
-    '39': 'right',
-    '40': 'down'
-};
-
-function getKey(keyCode){
-    return keySet[keyCode] || null;
-}
-
-var keys = rawObject({
+var keys$1 = rawObject({
     ctrl: false,
     shift: false,
     alt: false,
@@ -1022,37 +1011,48 @@ var enumerable = true;
 var configurable = true;
 
 document.addEventListener('keydown', function (event){
-    keys.ctrl = event.metaKey || event.ctrlKey;
-    keys.shift = event.shiftKey;
-    keys.alt = event.altKey;
-    keys.keyCode = keys.which = (event.which || event.keyCode);
-    keys.key = event.key;
+    keys$1.ctrl = event.metaKey || event.ctrlKey;
+    keys$1.shift = event.shiftKey;
+    keys$1.alt = event.altKey;
+    keys$1.keyCode = keys$1.which = (event.which || event.keyCode);
+    keys$1.key = event.key;
 });
 
 document.addEventListener('keyup', function (event){
-    keys.ctrl = keys.shift = keys.alt = false;
-    keys.key = keys.keyCode = keys.which = null;
+    keys$1.ctrl = keys$1.shift = keys$1.alt = false;
+    keys$1.key = keys$1.keyCode = keys$1.which = null;
 });
 
 function defineProp(dest, prop){
     Object.defineProperty(dest, prop, {
-        get: function get(){ return keys[prop]; },
+        get: function get(){ return keys$1[prop]; },
         enumerable: enumerable,
         configurable: configurable
     });
 }
 
 function mixinKeys(dest){
-    for(var name in keys){
+    for(var name in keys$1){
         if(!dest.hasOwnProperty(name))
             { defineProp(dest, name); }
     }
 }
 
 function cleanKeysMixin(dest){
-    for(var name in keys){
+    for(var name in keys$1){
         delete dest[name];
     }
+}
+
+var keySet = {
+    '37': 'left',
+    '38': 'up',
+    '39': 'right',
+    '40': 'down'
+};
+
+function getKey(keyCode){
+    return keySet[keyCode] || null;
 }
 
 var DOMArrowSelect = function DOMArrowSelect(ref){

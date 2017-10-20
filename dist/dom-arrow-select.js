@@ -998,17 +998,6 @@ function getElement(element){
 
 }
 
-var keySet = {
-    '37': 'left',
-    '38': 'up',
-    '39': 'right',
-    '40': 'down'
-};
-
-function getKey(keyCode){
-    return keySet[keyCode] || null;
-}
-
 var keys$1 = rawObject({
     ctrl: false,
     shift: false,
@@ -1053,6 +1042,17 @@ function cleanKeysMixin(dest){
     for(var name in keys$1){
         delete dest[name];
     }
+}
+
+var keySet = {
+    '37': 'left',
+    '38': 'up',
+    '39': 'right',
+    '40': 'down'
+};
+
+function getKey(keyCode){
+    return keySet[keyCode] || null;
 }
 
 var DOMArrowSelect = function DOMArrowSelect(ref){

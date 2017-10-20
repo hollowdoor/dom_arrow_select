@@ -3,8 +3,8 @@ import domStep from 'dom-step';
 import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
 import getElement from 'dom-get-element';
+import { mixinKeys, cleanKeysMixin } from 'dom-keys-mixin';
 import getKey from './lib/get_key.js';
-import { mixinKeys, cleanKeysMixin } from './lib/keys_mixin.js';
 
 class DOMArrowSelect {
     constructor({
