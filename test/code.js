@@ -977,10 +977,12 @@ function isElement$1(o){
     );
 }
 
-function getElement(element){
+function getElement(element, context){
+    if ( context === void 0 ) { context = document; }
+
     if(typeof element === 'string'){
         try{
-            return document.querySelector(element);
+            return context.querySelector(element);
         }catch(e){ throw e; }
     }
 
@@ -1156,7 +1158,7 @@ DOMArrowSelect.prototype.swap = function swap (element, direction){
 DOMArrowSelect.prototype.unSelect = function unSelect (child){
     if(child === null) { return this; }
     if(!this.element) { return this; }
-    child = getElement(child);
+    child = getElement(child, this.element);
 
     if(child){
         if(child.parentNode !== this.element){
@@ -1172,7 +1174,7 @@ DOMArrowSelect.prototype.unSelect = function unSelect (child){
 DOMArrowSelect.prototype.select = function select (child){
     if(child === null) { return this; }
     if(!this.element) { return this; }
-    child = getElement(child);
+    child = getElement(child, this.element);
 
     if(child.parentNode !== this.element){
         throw new TypeError(((child.outerHTML) + " is not a child of " + (this.element.outerHTML)));

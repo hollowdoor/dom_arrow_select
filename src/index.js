@@ -103,7 +103,7 @@ class DOMArrowSelect {
     unSelect(child){
         if(child === null) return this;
         if(!this.element) return this;
-        child = getElement(child);
+        child = getElement(child, this.element);
 
         if(child){
             if(child.parentNode !== this.element){
@@ -119,7 +119,7 @@ class DOMArrowSelect {
     select(child){
         if(child === null) return this;
         if(!this.element) return this;
-        child = getElement(child);
+        child = getElement(child, this.element);
 
         if(child.parentNode !== this.element){
             throw new TypeError(`${child.outerHTML} is not a child of ${this.element.outerHTML}`);
