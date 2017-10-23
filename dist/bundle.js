@@ -30,12 +30,16 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
     };
     var outside = ref.outside; if ( outside === void 0 ) outside = function(){};
     var step = ref.step; if ( step === void 0 ) step = function(){};
+    var classList = ref.classList; if ( classList === void 0 ) classList = function(element){
+        return element.classList;
+    };
 
 
     this.element = null;
     this.current = null;
     this._selected = selected;
     this._outside = outside;
+    this._classList = classList;
     this._step = function(dir){
         return step.call(this, dir) || {};
     };
@@ -127,7 +131,7 @@ DOMArrowSelect.prototype.unSelect = function unSelect (child){
         if(child.parentNode !== this.element){
             throw new TypeError(((child.outerHTML) + " is not a child of " + (this.element.outerHTML)));
         }
-        child.classList.remove(this.selectID);
+        this._classList(child).remove(this.selectID);
         if(this.current === child){
             this.current = null;
         }
@@ -144,7 +148,7 @@ DOMArrowSelect.prototype.select = function select (child){
     }
 
     if(child !== this.current){
-        child.classList.add(this.selectID);
+        this._classList(child).add(this.selectID);
         this.current = child;
     }
     return this;

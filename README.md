@@ -48,6 +48,11 @@ const as = arrowSelect({
 
         //If options.step() returns with a wrap option
         //outside() might not be called
+    },
+    classList(element){
+        //Give dom-arrow-select a custom classList
+        //for manipulating CSS classes.
+        return element.classList;
     }
 }).focus(document.querySelector('#parent-id'));
 ```

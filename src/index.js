@@ -14,13 +14,17 @@ class DOMArrowSelect {
             this.select(next);
         },
         outside = function(){},
-        step = function(){}
+        step = function(){},
+        classList = function(element){
+            return element.classList;
+        }
     } = {}){
 
         this.element = null;
         this.current = null;
         this._selected = selected;
         this._outside = outside;
+        this._classList = classList;
         this._step = function(dir){
             return step.call(this, dir) || {};
         };
@@ -109,7 +113,7 @@ class DOMArrowSelect {
             if(child.parentNode !== this.element){
                 throw new TypeError(`${child.outerHTML} is not a child of ${this.element.outerHTML}`);
             }
-            child.classList.remove(this.selectID);
+            this._classList(child).remove(this.selectID);
             if(this.current === child){
                 this.current = null;
             }
@@ -126,7 +130,7 @@ class DOMArrowSelect {
         }
 
         if(child !== this.current){
-            child.classList.add(this.selectID);
+            this._classList(child).add(this.selectID);
             this.current = child;
         }
         return this;
