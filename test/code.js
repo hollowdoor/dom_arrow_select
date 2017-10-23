@@ -1071,7 +1071,7 @@ var DOMArrowSelect = function DOMArrowSelect(ref){
     this.current = null;
     this._selected = selected;
     this._outside = outside;
-    this._stepOpts = function(dir){
+    this._step = function(dir){
         return step$$1.call(this, dir) || {};
     };
 
@@ -1104,10 +1104,10 @@ DOMArrowSelect.prototype.step = function step$$1 (key){
     var el = this.current;
     var next = null;
     var ref = this;
-        var _stepOpts = ref._stepOpts;
+        var _step = ref._step;
         var _selected = ref._selected;
         var _outside = ref._outside;
-    var opts = _stepOpts.call(this, key);
+    var opts = _step.call(this, key);
 
     if(!this.current){
         next = getCorner(element, key, {
@@ -1229,6 +1229,17 @@ function arrowSelect(element, options){
     return new DOMArrowSelect(element, options);
 }
 
+var directions = {
+    down: {
+        wrap: 10,
+        range: 3
+    },
+    up: {
+        wrap: 5,
+        range: 3
+    }
+};
+
 var swap = {
     down: function down(as, side){
         if(as.focused('#horizontal')) { return; }
@@ -1250,7 +1261,7 @@ var as = arrowSelect({
         this.select(next);
     },
     step: function step(side){
-        return;// directions[side];
+        return directions[side];
     },
     outside: function outside(current, side){
         console.log('current ',current );

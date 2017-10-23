@@ -21,7 +21,7 @@ class DOMArrowSelect {
         this.current = null;
         this._selected = selected;
         this._outside = outside;
-        this._stepOpts = function(dir){
+        this._step = function(dir){
             return step.call(this, dir) || {};
         };
 
@@ -53,8 +53,8 @@ class DOMArrowSelect {
         let element = this.element;
         let el = this.current;
         let next = null;
-        let {_stepOpts, _selected, _outside} = this;
-        let opts = _stepOpts.call(this, key);
+        let {_step, _selected, _outside} = this;
+        let opts = _step.call(this, key);
 
         if(!this.current){
             next = getCorner(element, key, {

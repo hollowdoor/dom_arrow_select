@@ -31,7 +31,7 @@ const as = arrowSelect({
         this.select(next);
     },
     step(side){
-        return;// directions[side];
+        return directions[side];
     },
     outside(current, side){
         console.log('current ',current );
