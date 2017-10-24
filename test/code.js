@@ -1046,12 +1046,12 @@ function cleanKeysMixin(dest){
     }
 }
 
-var keySet = {
+var keySet = rawObject({
     '37': 'left',
     '38': 'up',
     '39': 'right',
     '40': 'down'
-};
+});
 
 function getKey(keyCode){
     return keySet[keyCode] || null;

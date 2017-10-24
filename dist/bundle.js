@@ -8,13 +8,14 @@ var arrayFrom = _interopDefault(require('array-from'));
 var getCorner = _interopDefault(require('dom-get-corner'));
 var getElement = _interopDefault(require('dom-get-element'));
 var domKeysMixin = require('dom-keys-mixin');
+var rawObject = _interopDefault(require('raw-object'));
 
-var keySet = {
+var keySet = rawObject({
     '37': 'left',
     '38': 'up',
     '39': 'right',
     '40': 'down'
-};
+});
 
 function getKey(keyCode){
     return keySet[keyCode] || null;

@@ -4,13 +4,14 @@ import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
 import getElement from 'dom-get-element';
 import { cleanKeysMixin, mixinKeys } from 'dom-keys-mixin';
+import rawObject from 'raw-object';
 
-var keySet = {
+var keySet = rawObject({
     '37': 'left',
     '38': 'up',
     '39': 'right',
     '40': 'down'
-};
+});
 
 function getKey(keyCode){
     return keySet[keyCode] || null;

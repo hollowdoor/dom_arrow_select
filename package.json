@@ -29,9 +29,7 @@
     "dom-get-corner": "^1.0.0",
     "dom-get-element": "^1.0.0",
     "dom-keys-mixin": "^1.0.0",
-    "dom-next-element-sibling": "^1.0.0",
     "dom-step": "^2.0.0",
-    "object-assign": "^4.1.1",
     "raw-object": "^1.0.0"
   },
   "main": "dist/bundle.js",
