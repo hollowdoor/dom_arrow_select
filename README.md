@@ -173,6 +173,39 @@ This is the CSS class name used to identify selected children elements. `as.sele
 
 These are true if their keys are being held down; false if their keys are not being held.
 
+Events
+----
+
+`arrowSelect` is an event Emitter.
+
+You can use these events.
+
+
+```javascript
+import arrowSelect from 'dom-arrow-select';
+
+let as = arrowSelect({
+    selectID: 'selected'
+}).focus(document.querySelector('#parent-id'));
+
+as.on('pointerdown', element=>{
+    //This function is called when there is a mousedown event.
+    //Some time in the future this might be an actual pointerdown event
+    //pointerdown fires only on selected elements
+});
+as.on('enter', elements=>{
+    //This function is called on enter (keyup).
+    //The enter event is a global event for getting any
+    //element matching the class set on options.selectID
+});
+as.on('focusenter', elements=>{
+    //This function is called on enter (keyup) for the currently
+    //focused element for getting any
+    //element matching the class set on options.selectID
+    //that is a descendant of the current focused element.
+});
+```
+
 **WARNING!:** Some infinite recursion is possible when combining these methods, and options:
 
 * options.selected()

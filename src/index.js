@@ -1,12 +1,14 @@
 import events from 'dom-eve';
 import domStep from 'dom-step';
+import matches from 'matches-selector';
 import arrayFrom from 'array-from';
 import getCorner from 'dom-get-corner';
 import getElement from 'dom-get-element';
 import { mixinKeys, cleanKeysMixin } from 'dom-keys-mixin';
+import { Emitter } from 'more-events';
 import getKey from './lib/get_key.js';
 
-class DOMArrowSelect {
+class DOMArrowSelect extends Emitter {
     constructor({
         selectID = 'dom-arrow-select-selected',
         selected = function(next, prev){
@@ -19,7 +21,7 @@ class DOMArrowSelect {
             return element.classList;
         }
     } = {}){
-
+        super();
         this.element = null;
         this.current = null;
         this._selected = selected;
@@ -45,6 +47,29 @@ class DOMArrowSelect {
 
             if(key && element && element.parentNode){
                 this.step(key);
+            }
+        });
+
+        events(document, tracker).on('mousedown', event=>{
+            if(matches(event.target, '.'+selectID)){
+                this.emit('pointerdown', event.target);
+                event.stopPropagation();
+            }
+        });
+
+        events(document, tracker).on('keyup', event=>{
+            if(13 !== (event.which || event.keyCode)) return;
+
+            if(this.element.offsetHeight){
+                let elements = this.element.querySelectorAll('.'+selectID);
+                if(elements && elements.length){
+                    this.emit('focusenter', arrayFrom(elements));
+                }
+            }
+
+            let elements = document.querySelectorAll('.'+selectID);
+            if(elements && elements.length){
+                this.emit('enter', arrayFrom(elements));
             }
         });
 

@@ -40,6 +40,14 @@ const as = arrowSelect({
     }
 });
 
+as.on('pointerdown', element=>console.log('pdown ', element));
+as.on('enter', elements=>{
+    console.log('enter elements ', elements);
+});
+as.on('focusenter', elements=>{
+    console.log('focus elements ', elements);
+});
+
 as.focus('#vertical');
 
 setTimeout(()=>{

@@ -30,6 +30,8 @@
     "dom-get-element": "^1.0.0",
     "dom-keys-mixin": "^1.0.0",
     "dom-step": "^2.0.0",
+    "matches-selector": "^1.2.0",
+    "more-events": "^2.0.0",
     "raw-object": "^1.0.0"
   },
   "main": "dist/bundle.js",
